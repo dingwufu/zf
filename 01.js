@@ -99,6 +99,14 @@ class Promise {
   catch(errCallback) {
     return this.then(null, errCallback)
   }
+
+  finally (cb) {
+    // console.log('重写finally');
+    return this.then(
+      val => Promise.resolve(cb()).then(() => val),
+      err => Promise.resolve(cb()).then(() => { throw new Error(); })
+    );
+  }
 }
 
 function resolvePromise(promise2, x, resolve, reject) {
@@ -128,13 +136,4 @@ function resolvePromise(promise2, x, resolve, reject) {
   } else {
     resolve(x);
   }
-}
-
-
-Promise.prototype.finally = function (cb) {
-  // console.log('重写finally');
-  return this.then(
-    val => Promise.resolve(cb()).then(() => val),
-    err => Promise.resolve(cb()).then(() => { throw new Error(); })
-  );
 }
