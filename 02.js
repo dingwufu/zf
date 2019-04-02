@@ -43,19 +43,16 @@ Module._cache = Object.create(null); // 不会继承0bject原型属性
 Module._extensions = {
 	'.js'(module) {
 		let str = fs.readFileSync(module.id, 'utf8');
-		// 给读取到的内容 增加了个函数
+		
 		let scriptStr = Module.wrapper[0] + str + Module.wrapper[1];
 		let fn = vm.runInThisContext(scriptStr);
-		// 把函数执行 将exports属性传递给 sum.js
-		// exports 是module.exports 别名
 		fn.call(module.exports, module.exports, module, req);
 	},
-	// json处理的时候把exports对象添上 处理js的时候 让用户自己把结果放上去
 	'.json'(module) {
 		let str = fs.readFileSync(module.id, 'utf8');
 		try {
 			str = JSON.parse(str);
-			module.exports = str; // 把最终的结果放到exports对象上 require方法会自动把结果返回回去
+			module.exports = str;
 		} catch (error) {
 			throw error;
 		}
