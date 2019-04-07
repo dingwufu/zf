@@ -1,4 +1,4 @@
-let Promise = require('./01')
+let Promise = require('./promise')
 let p = new Promise((resolve,reject)=>{
     resolve(1000)
 });
