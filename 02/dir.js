@@ -38,12 +38,13 @@ function depthDirPromise(dir, arr = []) {
                     if (err) return reject(err);
                     let absFiles = files.map(file => path.join(dir, file));
 
-                    function next(index) {
+                    function next(index) { // 同级切换遍历
                         if(index === absFiles.length) {
                             arr.push(dir);
                             return resolve(arr);
                         }
 
+                        // 向下深度遍历
                         depthDirPromise(absFiles[index], arr).then(dir => {
                             next(index + 1);
                         }).catch(reject);
